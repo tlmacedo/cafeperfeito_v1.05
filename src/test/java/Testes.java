@@ -9,10 +9,7 @@ import br.com.tlmacedo.cafeperfeito.model.vo.enums.NfeModalidadeFrete;
 import br.com.tlmacedo.cafeperfeito.model.vo.enums.NfePresencaComprador;
 import br.com.tlmacedo.cafeperfeito.nfe.*;
 import br.com.tlmacedo.cafeperfeito.nfe.v400.*;
-import br.com.tlmacedo.cafeperfeito.service.ServiceBuscaWebService;
-import br.com.tlmacedo.cafeperfeito.service.ServiceFileSave;
-import br.com.tlmacedo.cafeperfeito.service.ServiceVariaveisSistema;
-import br.com.tlmacedo.cafeperfeito.service.ServiceXmlUtil;
+import br.com.tlmacedo.cafeperfeito.service.*;
 import br.inf.portalfiscal.wsdl.nfe.hom.nfeAutorizacao4.NfeAutorizacao4Stub;
 import br.inf.portalfiscal.wsdl.nfe.hom.nfeRetAutorizacao4.NfeRetAutorizacao4Stub;
 import br.inf.portalfiscal.xsd.nfe.consReciNFe.TConsReciNFe;
@@ -46,10 +43,11 @@ public class Testes {
 
         SaidaProdutoNfe nfe = new SaidaProdutoNfe();
         SaidaProduto saidaProduto = new SaidaProdutoDAO().getById(SaidaProduto.class, Long.valueOf(scan.nextLine().replaceAll("\\D", "")));
-        System.out.printf("Tentando\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n\n");
-        System.out.printf("SaidaProduto: [%s]\n", saidaProduto);
+
+        ServiceJSonUtil.printJsonFromObject(saidaProduto, "SaidaProduto:");
+
         nfe.setSaidaProduto(saidaProduto);
-        System.out.printf("Tentou\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-\n");
+
         try {
             nfe.setNaturezaOperacao("VENDA DENTRO DO ESTADO");
             System.out.printf("\nqual o numero da NFe ? ");

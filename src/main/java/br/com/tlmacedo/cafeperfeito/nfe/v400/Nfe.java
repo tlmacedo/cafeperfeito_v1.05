@@ -372,7 +372,8 @@ public class Nfe {
         /**
          * Complemento
          */
-        tEndereco.setXCpl(end.getComplemento());
+        if (!(end.getComplemento().equals("") || end.getComplemento().equals(null)))
+            tEndereco.setXCpl(end.getComplemento());
 
         /**
          * Bairro
