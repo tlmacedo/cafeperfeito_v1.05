@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.4.2.final using JasperReports Library version 6.4.1  -->
-<jasperReport xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xmlns="http://jasperreports.sourceforge.net/jasperreports"
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
               name="SIDTMDanfe" pageWidth="595" pageHeight="841" whenNoDataType="AllSectionsNoDetail" columnWidth="530"
               leftMargin="34" rightMargin="31" topMargin="22" bottomMargin="28"
@@ -9,7 +9,7 @@
     <property name="ireport.zoom" value="1.5"/>
     <property name="ireport.x" value="0"/>
     <property name="ireport.y" value="0"/>
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="dtAdaptSIDTMDanfe.xml"/>
     <queryString language="xPath">
         <![CDATA[/nfeProc/NFe/infNFe/det]]>
     </queryString>
@@ -663,8 +663,8 @@ $F{protNFechNFe}.substring( 40, 44)]]></textFieldExpression>
                 <textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
                     <font fontName="Times New Roman" size="8" isBold="false" isUnderline="false"/>
                 </textElement>
-                <text>
-                    <![CDATA[Consulta de autenticidade no portal nacional da NF-e <u><b>www.nfe.fazenda.gov.br/portal</b></u> ou no site da Sefaz Autorizadora]]></text>
+                <text><![CDATA[
+                    Consulta de autenticidade no portal nacional da NF-e <u><b>www.nfe.fazenda.gov.br/portal</b></u> ou no site da Sefaz Autorizadora]]></text>
             </staticText>
             <rectangle radius="3">
                 <reportElement x="0" y="93" width="320" height="20" uuid="54fb45dc-6a68-4656-b492-aacf71e39868"/>
@@ -2432,7 +2432,6 @@ $F{prodICMSCST}]]></textFieldExpression>
                 <textElement textAlignment="Justified">
                     <font fontName="Times New Roman" size="7"/>
                 </textElement>
-                <textFieldExpression><![CDATA[$F{infAdicinfCpl}.replace(" - ", "\n")]]></textFieldExpression>
             </textField>
             <rectangle radius="3">
                 <reportElement x="255" y="43" width="275" height="90" uuid="18eb1909-a7e6-402c-be75-2d15ebe44095"/>

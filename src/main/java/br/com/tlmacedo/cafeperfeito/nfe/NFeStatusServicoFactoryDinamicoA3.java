@@ -2,7 +2,7 @@ package br.com.tlmacedo.cafeperfeito.nfe;
 
 import br.com.tlmacedo.cafeperfeito.service.ServiceVariaveisSistema;
 import br.com.tlmacedo.cafeperfeito.service.ServiceXmlUtil;
-import br.inf.portalfiscal.wsdl.nfe.hom.nfeStatusServico4.NfeStatusServico4Stub;
+import br.inf.portalfiscal.wsdl.nfe.prod.nfeStatusServico4.NfeStatusServico4Stub;
 import br.inf.portalfiscal.xsd.nfe.consStatServ.TConsStatServ;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
@@ -11,6 +11,8 @@ import org.apache.axis2.AxisFault;
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import java.rmi.RemoteException;
+
+import static br.com.tlmacedo.cafeperfeito.service.ServiceVariaveisSistema.TCONFIG;
 
 public class NFeStatusServicoFactoryDinamicoA3 {
 
@@ -30,9 +32,12 @@ public class NFeStatusServicoFactoryDinamicoA3 {
              * Xml de Consulta.
              */
             TConsStatServ consStatServ = new TConsStatServ();
-            consStatServ.setTpAmb("2");
-            consStatServ.setCUF("13");
-            consStatServ.setVersao("4.00");
+            consStatServ.setTpAmb(String.valueOf(TCONFIG.getNfe().getTpAmb()));
+            consStatServ.setCUF(String.valueOf(TCONFIG.getInfLoja().getCUF()));
+            consStatServ.setVersao(TCONFIG.getNfe().getVersao());
+            //consStatServ.setTpAmb("2");
+//            consStatServ.setCUF("13");
+//            consStatServ.setVersao("4.00");
             consStatServ.setXServ("STATUS");
             String xml = null;
             try {

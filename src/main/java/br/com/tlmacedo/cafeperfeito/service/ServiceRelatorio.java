@@ -7,7 +7,9 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
+import java.io.File;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,23 @@ import java.util.Map;
 
 public class ServiceRelatorio {
     public ServiceRelatorio() {
+    }
+
+    public void gerar(RelatorioTipo tipo, Map parametros, File arquivoXml) throws JRException {
+
+        InputStream relJasper = getClass().getResourceAsStream(tipo.getDescricao());
+
+        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource((Collection<?>) arquivoXml);
+
+        JasperPrint impressao = null;
+
+        try {
+            impressao = JasperFillManager.fillReport(relJasper, parametros, ds);
+            JasperViewer viewer = new JasperViewer(impressao, false);
+            viewer.setVisible(true);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public void gerar(RelatorioTipo tipo, Map parametros, List list) throws JRException {

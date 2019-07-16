@@ -123,6 +123,7 @@ public class Testes {
         }
 
         retorno = result.getExtraElement().toString();
+
         System.out.printf("strAutorizacaoNFe:\n%s\n\n\n", retorno);
         return retorno;
     }

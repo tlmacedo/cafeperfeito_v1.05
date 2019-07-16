@@ -1,5 +1,6 @@
 package br.com.tlmacedo.cafeperfeito.service;
 
+import br.com.tlmacedo.cafeperfeito.nfe.ServiceImprimeDanfe;
 import br.inf.portalfiscal.xsd.nfe.enviNFe.TEnviNFe;
 import br.inf.portalfiscal.xsd.nfe.enviNFe.TNFe;
 import br.inf.portalfiscal.xsd.nfe.procNFe.TNfeProc;
@@ -32,15 +33,22 @@ public class ServiceFileSave {
                     (tNfeProc.getProtNFe().getInfProt().getCStat().equals("100")) ? "-nfe" : "-naoAutorizado"));
 
 
-            FileWriter arqXml = new FileWriter(new File(
-                    String.format("%s%s%s%s.xml",
-                            System.getProperty("user.dir"),
-                            TCONFIG.getPaths().getPathNFeSaveXmlOut().trim(),
-                            tNfeProc.getNFe().getInfNFe().getId(),
-                            (tNfeProc.getProtNFe().getInfProt().getCStat().equals("100")) ? "-nfe" : "-naoAutorizado")
-            ));
+            String diretorio = String.format("%s%s%s%s.xml",
+                    System.getProperty("user.dir"),
+                    TCONFIG.getPaths().getPathNFeSaveXmlOut().trim(),
+                    tNfeProc.getNFe().getInfNFe().getId(),
+                    (tNfeProc.getProtNFe().getInfProt().getCStat().equals("100")) ? "-nfe" : "-naoAutorizado");
+            FileWriter arqXml = new FileWriter(new File(diretorio));
+//            FileWriter arqXml = new FileWriter(new File(
+//                    String.format("%s%s%s%s.xml",
+//                            System.getProperty("user.dir"),
+//                            TCONFIG.getPaths().getPathNFeSaveXmlOut().trim(),
+//                            tNfeProc.getNFe().getInfNFe().getId(),
+//                            (tNfeProc.getProtNFe().getInfProt().getCStat().equals("100")) ? "-nfe" : "-naoAutorizado")
+//            ));
             arqXml.write(ServiceXmlUtil.objectToXml(tNfeProc));
             arqXml.close();
+            new ServiceImprimeDanfe().imprimeDanfe(new File(diretorio));
         } catch (JAXBException | IOException e) {
             e.printStackTrace();
             return false;
