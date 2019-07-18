@@ -46,9 +46,11 @@ public class ServiceFileSave {
 //                            tNfeProc.getNFe().getInfNFe().getId(),
 //                            (tNfeProc.getProtNFe().getInfProt().getCStat().equals("100")) ? "-nfe" : "-naoAutorizado")
 //            ));
+            System.out.printf("diretorio que foi achado: [%s]\n", arqXml.getClass().getName());
             arqXml.write(ServiceXmlUtil.objectToXml(tNfeProc));
             arqXml.close();
             new ServiceImprimeDanfe().imprimeDanfe(new File(diretorio));
+            //new ServiceRelatorio().gerar(RelatorioTipo.NFE, diretorio);
         } catch (JAXBException | IOException e) {
             e.printStackTrace();
             return false;

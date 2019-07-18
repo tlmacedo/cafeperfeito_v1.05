@@ -27,8 +27,10 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Pair;
 import org.apache.commons.lang3.StringUtils;
@@ -160,6 +162,10 @@ public class ControllerCadastroEmpresa implements Initializable, ModeloCafePerfe
     private EmailHomePage emailHomePageAntigo, emailHomePageNovo, emailHomePageContatoAntigo, emailHomePageContatoNovo;
     private Contato contatoAntigo, contatoNovo;
 
+    ContextMenu contextMenuEmailFinalidade = null;
+    MenuItem[] menuItensEmailFinalidade;
+
+
     @Override
     public void fechar() {
         ControllerPrincipal.ctrlPrincipal.tabPaneViewPrincipal.getTabs().remove(ViewCadastroEmpresa.getTab());
@@ -195,6 +201,7 @@ public class ControllerCadastroEmpresa implements Initializable, ModeloCafePerfe
         ServiceMascara.fatorarColunaCheckBox(TabModelEmpresa.getColunaIsFornecedor());
         ServiceMascara.fatorarColunaCheckBox(TabModelEmpresa.getColunaIsTransportadora());
         getListEndereco().setCellFactory(param -> new FormatListCell_Endereco());
+        getListEmailHomePage().setCellFactory(param -> new FormatListCell_EmailHomePage());
         getListTelefone().setCellFactory(param -> new FormatListCell_Telefone());
         getListAtividadePrincipal().setCellFactory(param -> new FormatListCell_InfoReceitaFederal());
         getListAtividadeSecundaria().setCellFactory(param -> new FormatListCell_InfoReceitaFederal());
@@ -288,6 +295,25 @@ public class ControllerCadastroEmpresa implements Initializable, ModeloCafePerfe
         getListQsaReceitaFederal().setItems(getInfoReceitaFederalObservableList().stream()
                 .filter(qsa -> qsa.getTipo() == AtividadeReceitaFederalTipo.QSA)
                 .collect(Collectors.toCollection(FXCollections::observableArrayList)));
+
+        getListEmailHomePage().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            if (contextMenuEmailFinalidade != null)
+                contextMenuEmailFinalidade.hide();
+            getListContatoEmailHomePage().setContextMenu(null);
+        });
+
+        getListEmailHomePage().addEventHandler(ContextMenuEvent.CONTEXT_MENU_REQUESTED, event -> {
+            if (getListEmailHomePage().getSelectionModel().getSelectedItem().getTipo() != WebTipo.EMAIL) {
+//                if (contextMenuEmailFinalidade != null)
+//                    contextMenuEmailFinalidade.hide();
+//                getListContatoEmailHomePage().setContextMenu(null);
+            } else {
+                criarMenus(getListEmailHomePage().getSelectionModel().getSelectedItem().getFinalidade());
+                getListEmailHomePage().setContextMenu(contextMenuEmailFinalidade);
+                contextMenuEmailFinalidade.show(getListEmailHomePage(), event.getScreenX(), event.getScreenY());
+                event.consume();
+            }
+        });
 
         setEventHandlerCadastroEmpresa(new EventHandler<KeyEvent>() {
             @Override
@@ -600,6 +626,8 @@ public class ControllerCadastroEmpresa implements Initializable, ModeloCafePerfe
                 stpDtAtualizDiffProperty().get(), stpDtAtualizDiffProperty()));
 
         camposValidos();
+
+
     }
 
 
@@ -1311,6 +1339,64 @@ public class ControllerCadastroEmpresa implements Initializable, ModeloCafePerfe
         if (getListContatoTelefone().isFocused()) {
             getListContatoTelefone().refresh();
             setTelContNovo(telTmp);
+        }
+    }
+
+    private void criarMenus(String contexto) {
+        contextMenuEmailFinalidade = new ContextMenu();
+        menuItensEmailFinalidade = new MenuItem[FinalidadeEmailTelefone.getList().size()];
+        FinalidadeEmailTelefone.getList().stream()
+                .filter(finalidadeEmailTelefone -> finalidadeEmailTelefone.getCod() > 0)
+                .forEach(finalidadeEmailTelefone -> {
+                    menuItensEmailFinalidade[finalidadeEmailTelefone.getCod()] =
+                            new MenuItem(
+                                    String.format("%s %s",
+                                            contexto.contains(String.valueOf(finalidadeEmailTelefone.getCod()))
+                                                    ? "✘"
+                                                    : "✔︎",
+                                            finalidadeEmailTelefone.getDescricao()
+                                    ));
+                    contextMenuEmailFinalidade.getItems().add(menuItensEmailFinalidade[finalidadeEmailTelefone.getCod()]);
+                });
+
+        for (int i = 1; i < menuItensEmailFinalidade.length; i++) {
+            int finalI = i;//✘ ✔
+            menuItensEmailFinalidade[i].setOnAction(event -> {
+                EmailHomePage mail = getListEmailHomePage().getSelectionModel().getSelectedItem();
+                if (menuItensEmailFinalidade[finalI].getText().toLowerCase().contains("✔︎")) {
+                    switch (FinalidadeEmailTelefone.toEnum(finalI)) {
+                        case NFE:
+                            getEmailHomePageObservableList().stream()
+                                    .filter(emailHomePage -> emailHomePage.getFinalidade()
+                                            .contains(String.valueOf(FinalidadeEmailTelefone.NFE.getCod())))
+                                    .forEach(emailHomePage -> emailHomePage.setFinalidade(emailHomePage.getFinalidade()
+                                            .replace(String.valueOf(FinalidadeEmailTelefone.NFE.getCod()), "")));
+                            mail.setFinalidade(mail.getFinalidade() + FinalidadeEmailTelefone.NFE.getCod());
+                            break;
+                        case PRINCIPAL:
+                            getEmailHomePageObservableList().stream()
+                                    .filter(emailHomePage -> emailHomePage.getFinalidade()
+                                            .contains(String.valueOf(FinalidadeEmailTelefone.PRINCIPAL.getCod())))
+                                    .forEach(emailHomePage -> emailHomePage.setFinalidade(emailHomePage.getFinalidade()
+                                            .replace(String.valueOf(FinalidadeEmailTelefone.PRINCIPAL.getCod()),
+                                                    String.valueOf(FinalidadeEmailTelefone.NULL.getCod()))));
+                            mail.setFinalidade(mail.getFinalidade().replace(String.valueOf(FinalidadeEmailTelefone.NULL.getCod()),
+                                    String.valueOf(FinalidadeEmailTelefone.PRINCIPAL.getCod())));
+                            break;
+                    }
+                } else {
+                    switch (FinalidadeEmailTelefone.toEnum(finalI)) {
+                        case NFE:
+                            mail.setFinalidade(mail.getFinalidade().replace("2", ""));
+                            break;
+                        case PRINCIPAL:
+                            mail.setFinalidade(mail.getFinalidade().replace("1", "0"));
+                            break;
+                    }
+                }
+                contextMenuEmailFinalidade.hide();
+                getListEmailHomePage().refresh();
+            });
         }
     }
 

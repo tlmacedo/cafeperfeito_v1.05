@@ -1,15 +1,17 @@
 package br.com.tlmacedo.cafeperfeito.service;
 
 import br.com.tlmacedo.cafeperfeito.model.vo.enums.RelatorioTipo;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRXmlDataSource;
 import net.sf.jasperreports.view.JasperViewer;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,19 +23,20 @@ import java.util.Map;
  */
 
 public class ServiceRelatorio {
+
     public ServiceRelatorio() {
     }
 
-    public void gerar(RelatorioTipo tipo, Map parametros, File arquivoXml) throws JRException {
+    public void gerar(RelatorioTipo tipo, File pathXml) throws JRException {
+
+        JRDataSource ds = new JRXmlDataSource(pathXml);
 
         InputStream relJasper = getClass().getResourceAsStream(tipo.getDescricao());
-
-        JRBeanCollectionDataSource ds = new JRBeanCollectionDataSource((Collection<?>) arquivoXml);
 
         JasperPrint impressao = null;
 
         try {
-            impressao = JasperFillManager.fillReport(relJasper, parametros, ds);
+            impressao = JasperFillManager.fillReport(relJasper, new HashMap<>(), ds);
             JasperViewer viewer = new JasperViewer(impressao, false);
             viewer.setVisible(true);
         } catch (Exception ex) {

@@ -556,7 +556,8 @@ public class Nfe {
         /**email
          * Campo pode ser utilizado para informar o e-mail de recepção da NF-e indicada pelo destinatário (v2.0)
          */
-        dest.setEmail(destinatario.getEmailPrincipal());
+        if (!(destinatario.getEmailPrincipal().equals("") || destinatario.getEmailPrincipal().equals(null)))
+            dest.setEmail(destinatario.getEmailPrincipal());
 
         //return dest;
     }

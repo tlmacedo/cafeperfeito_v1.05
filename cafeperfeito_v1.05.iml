@@ -12,8 +12,8 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="cafeperfeitoPU" value="bf2c53ed-bbe6-4a91-810a-ad8f06a1790d" />
-          <factory-entry name="ftpcafeperfeito" />
+          <factory-entry name="cafeperfeitoPU" value="ff462bbb-c010-4c91-ad28-e89b8f536f0b" />
+          <factory-entry name="ftpcafeperfeito" value="7f508935-eb62-47c3-b3fa-f3f7cbc0cfff" />
         </datasource-mapping>
         <naming-strategy-map />
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />

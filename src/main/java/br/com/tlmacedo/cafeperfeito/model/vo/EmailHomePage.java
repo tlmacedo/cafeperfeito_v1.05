@@ -15,6 +15,7 @@ public class EmailHomePage implements Serializable {
     private StringProperty descricao = new SimpleStringProperty();
 
     private IntegerProperty tipo = new SimpleIntegerProperty();
+    private StringProperty finalidade = new SimpleStringProperty("0");
 
     public EmailHomePage() {
     }
@@ -62,6 +63,19 @@ public class EmailHomePage implements Serializable {
 
     public void setTipo(WebTipo tipo) {
         this.tipo.set(tipo.getCod());
+    }
+
+    @Column(length = 4, nullable = false)
+    public String getFinalidade() {
+        return finalidade.get();
+    }
+
+    public StringProperty finalidadeProperty() {
+        return finalidade;
+    }
+
+    public void setFinalidade(String finalidade) {
+        this.finalidade.set(finalidade);
     }
 
     @Override

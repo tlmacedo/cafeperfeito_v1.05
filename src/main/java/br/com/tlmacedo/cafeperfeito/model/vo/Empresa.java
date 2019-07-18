@@ -57,6 +57,7 @@ public class Empresa extends RecursiveTreeObject<Empresa> implements Serializabl
     private List<Contato> contatoList = new ArrayList<>();
     private List<InfoReceitaFederal> infoReceitaFederalList = new ArrayList<>();
     private List<EmpresaProdutoValor> empresaProdutoValorList = new ArrayList<>();
+    private List<InformacaoBancaria> informacaoBancariaList = new ArrayList<>();
 
     public Empresa() {
     }
@@ -498,6 +499,15 @@ public class Empresa extends RecursiveTreeObject<Empresa> implements Serializabl
         this.empresaProdutoValorList = empresaProdutoValorList;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<InformacaoBancaria> getInformacaoBancariaList() {
+        return informacaoBancariaList;
+    }
+
+    public void setInformacaoBancariaList(List<InformacaoBancaria> informacaoBancariaList) {
+        this.informacaoBancariaList = informacaoBancariaList;
+    }
+
     public void setIe(String ie) {
         this.ie.set(ie.replaceAll("\\D", ""));
     }
@@ -577,48 +587,51 @@ public class Empresa extends RecursiveTreeObject<Empresa> implements Serializabl
     @JsonIgnore
     public String getEmailPrincipal() {
         EmailHomePage email = getEmailHomePageList().stream()
-                .filter(emailHomePage -> emailHomePage.getTipo() == WebTipo.EMAIL)
-                .findFirst().orElse(null);
+                .filter(emailHomePage -> emailHomePage.getFinalidade().contains("1"))
+                .findFirst().orElse(getEmailHomePageList().stream()
+                        .filter(emailHomePage -> emailHomePage.getTipo() == WebTipo.EMAIL)
+                        .findFirst().orElse(null));
         return email == null ? "" : email.toString();
     }
 
-//    @Override
-//    public String toString() {
-//        return String.format("%s (%s)", razaoProperty().get(), fantasiaProperty().get());
-//    }
-
-
     @Override
     public String toString() {
-        return "Empresa{" +
-                "id=" + id +
-                ", lojaSistema=" + lojaSistema +
-                ", classifJuridica=" + classifJuridica +
-                ", cnpj=" + cnpj +
-                ", ieIsento=" + ieIsento +
-                ", ie=" + ie +
-                ", razao=" + razao +
-                ", fantasia=" + fantasia +
-                ", cliente=" + cliente +
-                ", fornecedor=" + fornecedor +
-                ", transportadora=" + transportadora +
-                ", situacao=" + situacao +
-                ", usuarioCadastro=" + usuarioCadastro +
-                ", dataCadastro=" + dataCadastro +
-                ", usuarioAtualizacao=" + usuarioAtualizacao +
-                ", dataAtualizacao=" + dataAtualizacao +
-                ", dataAbetura=" + dataAbetura +
-                ", naturezaJuridica=" + naturezaJuridica +
-                ", observacoes=" + observacoes +
-                ", limite=" + limite +
-                ", prazo=" + prazo +
-                ", diaUtil=" + diaUtil +
-                ", enderecoList=" + enderecoList +
-                ", emailHomePageList=" + emailHomePageList +
-                ", telefoneList=" + telefoneList +
-                ", contatoList=" + contatoList +
-                ", infoReceitaFederalList=" + infoReceitaFederalList +
-                ", empresaProdutoValorList=" + empresaProdutoValorList +
-                '}';
+        return String.format("%s (%s)", razaoProperty().get(), fantasiaProperty().get());
     }
+
+
+//    @Override
+//    public String toString() {
+//        return "Empresa{" +
+//                "id=" + id +
+//                ", lojaSistema=" + lojaSistema +
+//                ", classifJuridica=" + classifJuridica +
+//                ", cnpj=" + cnpj +
+//                ", ieIsento=" + ieIsento +
+//                ", ie=" + ie +
+//                ", razao=" + razao +
+//                ", fantasia=" + fantasia +
+//                ", cliente=" + cliente +
+//                ", fornecedor=" + fornecedor +
+//                ", transportadora=" + transportadora +
+//                ", situacao=" + situacao +
+//                ", usuarioCadastro=" + usuarioCadastro +
+//                ", dataCadastro=" + dataCadastro +
+//                ", usuarioAtualizacao=" + usuarioAtualizacao +
+//                ", dataAtualizacao=" + dataAtualizacao +
+//                ", dataAbetura=" + dataAbetura +
+//                ", naturezaJuridica=" + naturezaJuridica +
+//                ", observacoes=" + observacoes +
+//                ", limite=" + limite +
+//                ", prazo=" + prazo +
+//                ", diaUtil=" + diaUtil +
+//                ", enderecoList=" + enderecoList +
+//                ", emailHomePageList=" + emailHomePageList +
+//                ", telefoneList=" + telefoneList +
+//                ", contatoList=" + contatoList +
+//                ", infoReceitaFederalList=" + infoReceitaFederalList +
+//                ", empresaProdutoValorList=" + empresaProdutoValorList +
+//                '}';
+//    }
+
 }

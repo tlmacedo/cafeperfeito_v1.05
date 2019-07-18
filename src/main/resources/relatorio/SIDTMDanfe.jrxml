@@ -23,7 +23,7 @@
         <fieldDescription><![CDATA[/nfeProc/NFe/infNFe/ide/natOp]]></fieldDescription>
     </field>
     <field name="ideindPag" class="java.lang.String">
-        <fieldDescription><![CDATA[/nfeProc/NFe/infNFe/ide/indPag]]></fieldDescription>
+        <fieldDescription><![CDATA[/nfeProc/NFe/infNFe/pag/detPag/indPag]]></fieldDescription>
     </field>
     <field name="idemod" class="java.lang.String">
         <fieldDescription><![CDATA[/nfeProc/NFe/infNFe/ide/mod]]></fieldDescription>
@@ -1578,9 +1578,13 @@ $F{destEnderfone}.substring(0, $F{destEnderfone}.length() - 4) + "-" + $F{destEn
                 <textFieldExpression><![CDATA[($F{transpmodFrete}.equals("0")) ?
 "0 - Eminente" :
 ($F{transpmodFrete}.equals("1")) ?
-"1 - Dest/Rem" :
+"1 - Destinatário" :
 ($F{transpmodFrete}.equals("2")) ?
 "2 - Terceiros" :
+($F{transpmodFrete}.equals("3")) ?
+"3 - Próprio Rem" :
+($F{transpmodFrete}.equals("4")) ?
+"4 - Próprio Dest" :
 "9 - Sem frete"]]></textFieldExpression>
             </textField>
             <rectangle radius="3">
@@ -2432,6 +2436,7 @@ $F{prodICMSCST}]]></textFieldExpression>
                 <textElement textAlignment="Justified">
                     <font fontName="Times New Roman" size="7"/>
                 </textElement>
+                <textFieldExpression><![CDATA[$F{infAdicinfCpl}]]></textFieldExpression>
             </textField>
             <rectangle radius="3">
                 <reportElement x="255" y="43" width="275" height="90" uuid="18eb1909-a7e6-402c-be75-2d15ebe44095"/>
