@@ -1,6 +1,5 @@
 package br.com.tlmacedo.cafeperfeito.model.vo;
 
-import br.com.tlmacedo.cafeperfeito.model.vo.enums.WebTipo;
 import javafx.beans.property.*;
 
 import javax.persistence.*;
@@ -14,15 +13,18 @@ public class EmailHomePage implements Serializable {
     private LongProperty id = new SimpleLongProperty();
     private StringProperty descricao = new SimpleStringProperty();
 
-    private IntegerProperty tipo = new SimpleIntegerProperty();
-    private StringProperty finalidade = new SimpleStringProperty("0");
+    private BooleanProperty mail = new SimpleBooleanProperty();
+    private BooleanProperty principal = new SimpleBooleanProperty();
+    private BooleanProperty nfe = new SimpleBooleanProperty();
 
     public EmailHomePage() {
     }
 
-    public EmailHomePage(String descricao, WebTipo tipo) {
+    public EmailHomePage(String descricao, Boolean mail, Boolean principal, Boolean nfe) {
         this.descricao = new SimpleStringProperty(descricao);
-        this.tipo = new SimpleIntegerProperty(tipo.getCod());
+        this.mail = new SimpleBooleanProperty(mail);
+        this.principal = new SimpleBooleanProperty(principal);
+        this.nfe = new SimpleBooleanProperty(nfe);
     }
 
     @Id
@@ -52,30 +54,43 @@ public class EmailHomePage implements Serializable {
         this.descricao.set(descricao);
     }
 
-    @Column(length = 2, nullable = false)
-    public WebTipo getTipo() {
-        return WebTipo.toEnum(tipo.get());
+    @Column(length = 1, nullable = false)
+    public boolean isMail() {
+        return mail.get();
     }
 
-    public IntegerProperty tipoProperty() {
-        return tipo;
+    public BooleanProperty mailProperty() {
+        return mail;
     }
 
-    public void setTipo(WebTipo tipo) {
-        this.tipo.set(tipo.getCod());
+    public void setMail(boolean mail) {
+        this.mail.set(mail);
     }
 
-    @Column(length = 4, nullable = false)
-    public String getFinalidade() {
-        return finalidade.get();
+    @Column(length = 1, nullable = false)
+    public boolean isPrincipal() {
+        return principal.get();
     }
 
-    public StringProperty finalidadeProperty() {
-        return finalidade;
+    public BooleanProperty principalProperty() {
+        return principal;
     }
 
-    public void setFinalidade(String finalidade) {
-        this.finalidade.set(finalidade);
+    public void setPrincipal(boolean principal) {
+        this.principal.set(principal);
+    }
+
+    @Column(length = 1, nullable = false)
+    public boolean isNfe() {
+        return nfe.get();
+    }
+
+    public BooleanProperty nfeProperty() {
+        return nfe;
+    }
+
+    public void setNfe(boolean nfe) {
+        this.nfe.set(nfe);
     }
 
     @Override

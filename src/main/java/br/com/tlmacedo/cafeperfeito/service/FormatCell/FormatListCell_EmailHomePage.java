@@ -1,7 +1,7 @@
 package br.com.tlmacedo.cafeperfeito.service.FormatCell;
 
 import br.com.tlmacedo.cafeperfeito.model.vo.EmailHomePage;
-import br.com.tlmacedo.cafeperfeito.model.vo.enums.FinalidadeEmailTelefone;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,9 +15,15 @@ import javafx.scene.layout.HBox;
  */
 
 public class FormatListCell_EmailHomePage extends ListCell<EmailHomePage> {
-    private ImageView imageView = new ImageView();
+    private ImageView[] imageView = new ImageView[4];
+    private CheckBox chkPrincipal = new CheckBox();
+    private CheckBox chkNfe = new CheckBox();
 
     public FormatListCell_EmailHomePage() {
+        imageView[0] = new ImageView(new Image("image/ico/ic_home_page_dp16.png"));
+        imageView[1] = new ImageView(new Image("image/ico/ic_email_dp16.png"));
+        imageView[2] = new ImageView(new Image("image/ico/ic_email_principal_dp16.png"));
+        imageView[3] = new ImageView(new Image("image/ico/ic_email_nfe_dp16.png"));
     }
 
     @Override
@@ -27,33 +33,28 @@ public class FormatListCell_EmailHomePage extends ListCell<EmailHomePage> {
             setGraphic(null);
             setText(null);
         } else {
-            HBox hBox = new HBox();
-            hBox.setSpacing(4);
-            switch (item.getTipo()) {
-                case HOMEPAGE:
-                    imageView = new ImageView();
-                    imageView.setImage(new Image("image/ico/ic_home_page_dp16.png"));
-                    hBox.getChildren().add(imageView);
-                    break;
-                case EMAIL:
-                    for (int value : item.getFinalidade().chars().map(Character::getNumericValue).toArray()) {
-                        FinalidadeEmailTelefone finalidade = FinalidadeEmailTelefone.toEnum(value);
-                        imageView = new ImageView();
-                        switch (finalidade) {
-                            case PRINCIPAL:
-                                imageView.setImage(new Image("image/ico/ic_email_principal_dp16.png"));
-                                break;
-                            case NFE:
-                                imageView.setImage(new Image("image/ico/ic_email_nfe_dp16.png"));
-                                break;
-                            default:
-                                //imageView.setImage(new Image("image/ico/ic_home_page_dp16.png"));
-                                imageView.setImage(new Image("image/ico/ic_email_dp16.png"));
-                                break;
-                        }
-                        hBox.getChildren().add(imageView);
-                    }
-                    break;
+            HBox hBoxSub, hBox = new HBox();
+            hBox.setSpacing(6);
+            if (item.isMail()) {
+                chkPrincipal.setSelected(item.isPrincipal());
+                chkNfe.setSelected(item.isNfe());
+
+                hBox.getChildren().add(imageView[1]);
+
+                hBoxSub = new HBox();
+                hBoxSub.setSpacing(4);
+                hBoxSub.getChildren().add(chkPrincipal);
+                hBoxSub.getChildren().add(imageView[2]);
+                hBox.getChildren().add(hBoxSub);
+
+                hBoxSub = new HBox();
+                hBoxSub.setSpacing(4);
+                hBoxSub.getChildren().add(chkNfe);
+                hBoxSub.getChildren().add(imageView[3]);
+                hBox.getChildren().add(hBoxSub);
+            } else {
+                hBox.getChildren().add(imageView[0]);
+
             }
 //            try {
 //                if (item.getTipo().equals(WebTipo.EMAIL))

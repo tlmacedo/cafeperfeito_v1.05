@@ -5,7 +5,6 @@ import br.com.tlmacedo.cafeperfeito.model.dao.EmpresaDAO;
 import br.com.tlmacedo.cafeperfeito.model.vo.enums.ClassificacaoJuridica;
 import br.com.tlmacedo.cafeperfeito.model.vo.enums.EnderecoTipo;
 import br.com.tlmacedo.cafeperfeito.model.vo.enums.SituacaoNoSistema;
-import br.com.tlmacedo.cafeperfeito.model.vo.enums.WebTipo;
 import br.com.tlmacedo.cafeperfeito.service.ServiceConsultaWebServices;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -172,7 +171,7 @@ public class Empresa extends RecursiveTreeObject<Empresa> implements Serializabl
             wsEmpresaReceitaWs.getEmailList().stream()
                     .forEach(email -> {
                         if (empresa.getEmailHomePageList().stream().noneMatch(e -> e.getDescricao().equals(email)))
-                            empresa.getEmailHomePageList().add(new EmailHomePage(email, WebTipo.EMAIL));
+                            empresa.getEmailHomePageList().add(new EmailHomePage(email, true, false, false));
                     });
 
             wsEmpresaReceitaWs.getTelefoneList().stream()
@@ -587,9 +586,9 @@ public class Empresa extends RecursiveTreeObject<Empresa> implements Serializabl
     @JsonIgnore
     public String getEmailPrincipal() {
         EmailHomePage email = getEmailHomePageList().stream()
-                .filter(emailHomePage -> emailHomePage.getFinalidade().contains("1"))
+                .filter(emailHomePage -> (emailHomePage.isMail() && emailHomePage.isPrincipal()))
                 .findFirst().orElse(getEmailHomePageList().stream()
-                        .filter(emailHomePage -> emailHomePage.getTipo() == WebTipo.EMAIL)
+                        .filter(emailHomePage -> emailHomePage.isMail())
                         .findFirst().orElse(null));
         return email == null ? "" : email.toString();
     }
