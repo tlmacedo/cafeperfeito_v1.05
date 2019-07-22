@@ -37,7 +37,9 @@ public class FormatListCell_EmailHomePage extends ListCell<EmailHomePage> {
             hBox.setSpacing(6);
             if (item.isMail()) {
                 chkPrincipal.setSelected(item.isPrincipal());
+                item.principalProperty().bind(chkPrincipal.selectedProperty());
                 chkNfe.setSelected(item.isNfe());
+                item.nfeProperty().bind(chkNfe.selectedProperty());
 
                 hBox.getChildren().add(imageView[1]);
 

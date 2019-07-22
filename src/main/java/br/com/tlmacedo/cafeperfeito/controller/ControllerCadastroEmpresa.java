@@ -281,6 +281,9 @@ public class ControllerCadastroEmpresa implements Initializable, ModeloCafePerfe
 
         getListEndereco().setItems(getEnderecoObservableList());
         getListEmailHomePage().setItems(getEmailHomePageObservableList());
+        getListEmailHomePage().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
+            
+        });
         getListTelefone().setItems(getTelefoneObservableList());
         getListContatoNome().setItems(getContatoObservableList());
         getListContatoEmailHomePage().setItems(getContatoEmailHomePageObservableList());
@@ -294,6 +297,7 @@ public class ControllerCadastroEmpresa implements Initializable, ModeloCafePerfe
         getListQsaReceitaFederal().setItems(getInfoReceitaFederalObservableList().stream()
                 .filter(qsa -> qsa.getTipo() == AtividadeReceitaFederalTipo.QSA)
                 .collect(Collectors.toCollection(FXCollections::observableArrayList)));
+
 
         getListEmailHomePage().addEventHandler(MouseEvent.MOUSE_PRESSED, event -> {
             contextMenuEmailFinalidade.hide();
