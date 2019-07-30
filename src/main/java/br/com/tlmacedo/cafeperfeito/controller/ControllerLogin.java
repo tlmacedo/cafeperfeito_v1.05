@@ -59,7 +59,8 @@ public class ControllerLogin implements Initializable, ModeloCafePerfeito {
     public void preencherObjetos() {
         getTitulo().setText(TCONFIG.getFxml().getLogin().getTitulo());
         getCboUsuarioLogin().setPromptText(String.format("%s:", "Selecione usuário"));
-        getCboUsuarioLogin().setItems(getUsuarioDAO().getAll(Usuario.class, null, null, null, null).stream().collect(Collectors.toCollection(FXCollections::observableArrayList)));
+//        getCboUsuarioLogin().setItems(getUsuarioDAO().getAll(Usuario.class, null, null, null, null).stream().collect(Collectors.toCollection(FXCollections::observableArrayList)));
+        getCboUsuarioLogin().setItems(new UsuarioDAO().getAll(Usuario.class, null, null, null, null).stream().collect(Collectors.toCollection(FXCollections::observableArrayList)));
 //        getCboUsuarioLogin().setEditable(true);
 //        new ServiceAutoCompleteComboBox<Usuario>(getCboUsuarioLogin(), Usuario.class);
     }
